@@ -9,9 +9,14 @@ jobs:
     name: 이슈 시작 디스코드 알림
     runs-on: ubuntu-latest
     steps:
+      - name: Set timezone to Korea
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "Asia/Seoul"
+
       - name: 현재 시간
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H:%M:%s')"
+        run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H:%M:%ss')"
         
       - name: 알림 전송
         uses: Ilshidur/action-discord@0.3.2
@@ -24,7 +29,7 @@ jobs:
                 { 
                   "title": "${{ github.event.issue.assignee.login }}가 작업을 시작했습니다!🥳",
                   "color": 10478271,
-                  "description": "바로가기:[#{{ github.event.issue.number }} ${{ github.event.issue.title }}](${{ github.event.issue.html_url }})",
+                  "description": "바로가기: [#${{ github.event.issue.number }} ${{ github.event.issue.title }}](${{ github.event.issue.html_url }})",
                   "timestamp": "${{ steps.date.outputs.date }}"
                 }
             ]
