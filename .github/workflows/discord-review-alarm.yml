@@ -1,0 +1,33 @@
+name: Backend 리뷰요청
+on:
+  pull_request:
+    types:
+      - ready_for_review
+
+jobs:
+  review-request:
+    name: 리뷰 요청 디스코드 알림
+    runs-on: ubuntu-latest 
+    steps:
+      - name: 알림 전송
+        uses: Ilshidur/action-discord@0.3.2
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.BACKEND_REVIEW_REQUEST_WEBHOOK_URL }}
+          DISCORD_USERNAME: 트래커 도우미
+          DISCORD_AVATAR: https://avatars.githubusercontent.com/u/204479047?s=48&v=4
+          DISCORD_EMBEDS: |
+            [
+                { 
+                  "title": "리뷰 '해줘'",
+                  "color": 10478271,
+                  "description": "이거 리뷰 '해' -> [${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})",
+                  "content": "야'해줘'",
+                  "fields": [
+                    {
+                      "name": "짱멋지게 작업한 사람",
+                      "value": "${{ github.event.issue.user.login }}",
+                      "inline": true
+                    }
+                  ]
+                }
+              ]
