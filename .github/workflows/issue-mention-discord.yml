@@ -9,11 +9,6 @@ jobs:
     name: 이슈 시작 디스코드 알림
     runs-on: ubuntu-latest
     steps:
-      - name: Set timezone to Korea
-        uses: szenius/set-timezone@v2.0
-        with:
-          timezoneLinux: "Asia/Seoul"
-
       - name: 현재 시간
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%dT%H:%M:00')"
