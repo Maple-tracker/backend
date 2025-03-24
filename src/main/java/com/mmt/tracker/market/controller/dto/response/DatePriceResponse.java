@@ -1,4 +1,4 @@
-package com.mmt.tracker.market.dto.response;
+package com.mmt.tracker.market.controller.dto.response;
 
 import java.time.LocalDate;
 

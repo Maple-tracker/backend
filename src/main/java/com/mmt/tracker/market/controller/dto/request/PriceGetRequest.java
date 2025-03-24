@@ -1,4 +1,4 @@
-package com.mmt.tracker.market.dto.request;
+package com.mmt.tracker.market.controller.dto.request;
 
 import com.mmt.tracker.market.domain.ItemName;
 import com.mmt.tracker.market.domain.StatType;

@@ -1,8 +1,8 @@
 package com.mmt.tracker.market.controller;
 
-import com.mmt.tracker.market.dto.request.PricePostRequest;
-import com.mmt.tracker.market.dto.response.DatePriceResponses;
-import com.mmt.tracker.market.dto.response.PricePostResponse;
+import com.mmt.tracker.market.controller.dto.request.PricePostRequest;
+import com.mmt.tracker.market.controller.dto.response.DatePriceResponses;
+import com.mmt.tracker.market.controller.dto.response.PricePostResponse;
 import com.mmt.tracker.market.service.PriceService;
 
 import io.swagger.v3.oas.annotations.Operation;
