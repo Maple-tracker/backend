@@ -5,11 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.time.LocalDateTime;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,11 +39,15 @@ public class Price {
     private Long amount;
 
     @Column(columnDefinition = "TIMESTAMP", nullable = false)
-    private LocalDateTime date;
+    private LocalDate date;
 
     public Price(
-            String itemName, String statType, short starForce, short statPercent, long amount, LocalDateTime date
-    ) {
+            String itemName,
+            String statType,
+            short starForce,
+            short statPercent,
+            long amount,
+            LocalDate date) {
         this.itemName = itemName;
         this.statType = statType;
         this.starForce = starForce;

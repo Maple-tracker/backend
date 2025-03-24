@@ -20,6 +20,9 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @Component
 @RequiredArgsConstructor
 public class MapleApiClient {
@@ -44,14 +47,13 @@ public class MapleApiClient {
     public String getCharacterEquipment(String ocid, LocalDate date) {
         StringBuilder urlBuilder = new StringBuilder(MapleApiUrl.BASE_URL.getUrl());
 
-        urlBuilder.append(MapleApiUrl.GET_CHARACTER_EQUIPMENT_BY_OCID.getUrl().formatted(ocid));
-
+        urlBuilder.append(
+                MapleApiUrl.GET_CHARACTER_ITEM_EQUIPMENT_BY_OCID.getUrl().formatted(ocid));
 
         if (date != null) {
             String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             urlBuilder.append("&date=").append(formattedDate);
         }
-
 
         return executeApiRequest(urlBuilder.toString());
     }

@@ -1,14 +1,11 @@
 package com.mmt.tracker.market.dto.request;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record PricePostRequest(
         String itemName,
         String statType,
-        short starForce,
-        short statPercent,
-        long price,
-        LocalDateTime date
-) {
-
-}
+        Short starForce,
+        Short statPercent,
+        Long amount,
+        LocalDate date) {}

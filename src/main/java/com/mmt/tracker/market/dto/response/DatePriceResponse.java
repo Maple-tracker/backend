@@ -1,11 +1,5 @@
 package com.mmt.tracker.market.dto.response;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-
-public record DatePriceResponse(
-        LocalDateTime date,
-        Long amount
-) {
-
-}
+public record DatePriceResponse(LocalDate date, Long amount) {}

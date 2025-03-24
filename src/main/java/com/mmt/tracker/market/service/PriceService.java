@@ -1,21 +1,18 @@
 package com.mmt.tracker.market.service;
 
 import com.mmt.tracker.advice.BadRequestException;
-
 import com.mmt.tracker.market.domain.Price;
 import com.mmt.tracker.market.dto.request.PricePostRequest;
 import com.mmt.tracker.market.dto.response.DatePriceResponse;
 import com.mmt.tracker.market.dto.response.DatePriceResponses;
 import com.mmt.tracker.market.dto.response.PricePostResponse;
 import com.mmt.tracker.market.repository.PriceRepository;
-import java.time.LocalDateTime;
-import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-
 
 @Service
 public class PriceService {
@@ -53,7 +50,7 @@ public class PriceService {
                         request.statType(),
                         request.starForce(),
                         request.statPercent(),
-                        request.price(),
+                        request.amount(),
                         request.date() != null ? request.date() : LocalDate.now());
         priceRepository.save(price);
         PricePostResponse response = new PricePostResponse();
@@ -62,7 +59,7 @@ public class PriceService {
     }
 
     private void validatePriceRequest(PricePostRequest request) {
-        if (request.price() != null && request.price() < 0) {
+        if (request.amount() != null && request.amount() < 0) {
             throw new BadRequestException("price는 0 이상이어야 합니다.");
         }
         if (request.starForce() < 0 || request.starForce() > 30) {
