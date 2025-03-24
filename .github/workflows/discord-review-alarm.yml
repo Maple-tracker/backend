@@ -3,6 +3,9 @@ on:
   pull_request:
     types:
       - ready_for_review
+    branches:
+      - main
+      - develop
 
 jobs:
   review-request:
