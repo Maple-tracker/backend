@@ -12,6 +12,31 @@ jobs:
     name: 리뷰 요청 디스코드 알림
     runs-on: ubuntu-latest 
     steps:
+      - name: discord message
+        uses: appleboy/discord-action@v1.2.0
+        with:
+          webhook_url: ${{ secrets.BACKEND_REVIEW_REQUEST_WEBHOOK_URL }}
+          message: |
+            {
+              "content": "<@&1354060709578805270>\n# 어이. 리뷰 요청이 왔다 💰\n당장 리뷰하러 가도록.\n\n## PR 바로가기 링크 \n### 🔗 [${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})\n\n### 📬 From. \n",
+              "tts": false,
+              "embeds": [
+                {
+                  "id": 183378348,
+                  "description": "",
+                  "fields": [],
+                  "author": {
+                    "name": "${{ github.event.pull_request.assignee.login }}",
+                    "icon_url": "${{ github.event.sender.avatar_url }}"
+                  }
+                }
+              ],
+              "components": [],
+              "actions": {},
+              "username": "애그리치: PR NPC ",
+              "avatar_url": "https://github.com/Maple-tracker/asset/blob/main/%E1%84%80%E1%85%A7%E1%86%BC%E1%84%86%E1%85%A2NPC.png?raw=true"
+            }
+    
       - name: 알림 전송
         uses: Ilshidur/action-discord@0.3.2
         env:
