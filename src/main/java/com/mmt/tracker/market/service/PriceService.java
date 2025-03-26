@@ -2,10 +2,10 @@ package com.mmt.tracker.market.service;
 
 import com.mmt.tracker.advice.BadRequestException;
 import com.mmt.tracker.market.domain.Price;
-import com.mmt.tracker.market.dto.request.PricePostRequest;
-import com.mmt.tracker.market.dto.response.DatePriceResponse;
-import com.mmt.tracker.market.dto.response.DatePriceResponses;
-import com.mmt.tracker.market.dto.response.PricePostResponse;
+import com.mmt.tracker.market.controller.dto.request.PricePostRequest;
+import com.mmt.tracker.market.controller.dto.response.DatePriceResponse;
+import com.mmt.tracker.market.controller.dto.response.DatePriceResponses;
+import com.mmt.tracker.market.controller.dto.response.PricePostResponse;
 import com.mmt.tracker.market.repository.PriceRepository;
 
 import org.springframework.stereotype.Service;
