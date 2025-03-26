@@ -17,45 +17,37 @@ jobs:
         with:
           webhook_url: ${{ secrets.BACKEND_REVIEW_REQUEST_WEBHOOK_URL }}
           message: |
-            {
-              "content": "<@&1354060709578805270>\n# 어이. 리뷰 요청이 왔다 💰\n당장 리뷰하러 가도록.\n\n## PR 바로가기 링크 \n### 🔗 [${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})\n\n### 📬 From. \n",
-              "tts": false,
-              "embeds": [
-                {
-                  "id": 183378348,
-                  "description": "",
-                  "fields": [],
-                  "author": {
-                    "name": "${{ github.event.pull_request.assignee.login }}",
-                    "icon_url": "${{ github.event.sender.avatar_url }}"
-                  }
-                }
-              ],
-              "components": [],
-              "actions": {},
-              "username": "애그리치: PR NPC ",
-              "avatar_url": "https://github.com/Maple-tracker/asset/blob/main/%E1%84%80%E1%85%A7%E1%86%BC%E1%84%86%E1%85%A2NPC.png?raw=true"
-            }
+            <@&1354060709578805270>
+            # 어이. 리뷰 요청이 왔다 💰
+            당장 리뷰하러 가도록.
+
+            ## PR 바로가기 링크
+            ### 🔗 [${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})
+
+            ### 📬 From.
+            > ${{ github.event.pull_request.assignee.login }}
+            > ${{ github.event.sender.avatar_url }}
+            ${{ github.event.pull_request.html_url }}
     
-      - name: 알림 전송
-        uses: Ilshidur/action-discord@0.3.2
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.BACKEND_REVIEW_REQUEST_WEBHOOK_URL }}
-          DISCORD_USERNAME: 트래커 도우미
-          DISCORD_AVATAR: https://avatars.githubusercontent.com/u/204479047?s=48&v=4
-          DISCORD_EMBEDS: |
-            [
-                { 
-                  "title": "리뷰 '해줘'",
-                  "color": 10478271,
-                  "description": "이거 리뷰 '해' -> [${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})",
-                  "content": "야'해줘'",
-                  "fields": [
-                    {
-                      "name": "짱멋지게 작업한 사람",
-                      "value": "${{ github.event.issue.user.login }}",
-                      "inline": true
-                    }
-                  ]
-                }
-              ]
+      # - name: 알림 전송
+      #   uses: Ilshidur/action-discord@0.3.2
+      #   env:
+      #     DISCORD_WEBHOOK: ${{ secrets.BACKEND_REVIEW_REQUEST_WEBHOOK_URL }}
+      #     DISCORD_USERNAME: 트래커 도우미
+      #     DISCORD_AVATAR: https://avatars.githubusercontent.com/u/204479047?s=48&v=4
+      #     DISCORD_EMBEDS: |
+      #       [
+      #           { 
+      #             "title": "리뷰 '해줘'",
+      #             "color": 10478271,
+      #             "description": "이거 리뷰 '해' -> [${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})",
+      #             "content": "야'해줘'",
+      #             "fields": [
+      #               {
+      #                 "name": "짱멋지게 작업한 사람",
+      #                 "value": "${{ github.event.issue.user.login }}",
+      #                 "inline": true
+      #               }
+      #             ]
+      #           }
+      #         ]
