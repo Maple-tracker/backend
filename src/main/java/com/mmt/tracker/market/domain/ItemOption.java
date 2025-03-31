@@ -54,6 +54,7 @@ public class ItemOption {
             Short starForce,
             StatType statType,
             PotentialOption potentialOption,
+            AdditionalPotentialOption additionalPotentialOption,
             Boolean starforceScrollFlag,
             Boolean enchantedFlag) {
         this.itemName = itemName.getValue();
@@ -61,6 +62,7 @@ public class ItemOption {
         this.starForce = starForce;
         this.statType = statType.getValue();
         this.potentialOption = potentialOption;
+        this.additionalPotentialOption = additionalPotentialOption;
         this.starforceScrollFlag = starforceScrollFlag;
         this.enchantedFlag = enchantedFlag;
     }
