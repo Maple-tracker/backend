@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,16 +24,16 @@ public class ItemTradeHistory {
     private Long amount;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDateTime timeStamp;
 
     @Column(columnDefinition = "SMALLINT", nullable = false)
     private Short cuttableCount;
 
     public ItemTradeHistory(
-            ItemOption itemOption, Long amount, LocalDate date, Short cuttableCount) {
+            ItemOption itemOption, Long amount, LocalDateTime timeStamp, Short cuttableCount) {
         this.itemOption = itemOption;
         this.amount = amount;
-        this.date = date;
+        this.timeStamp = timeStamp;
         this.cuttableCount = cuttableCount;
     }
 }
