@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/market/trades")
@@ -29,7 +30,7 @@ public class ItemTradeController {
     @Operation(summary = "아이템 거래 내역 등록", description = "아이템의 거래 내역을 등록합니다")
     @PostMapping
     public ResponseEntity<ItemTradePostResponse> postItemTradeHistory(@RequestBody ItemTradePostRequest request) {
-        ItemTradePostResponse response = itemTradeService.postItemTradeHistory(request);
-        return ResponseEntity.ok(response);
+        itemTradeService.postItemTradeHistory(request);
+        return ResponseEntity.created(URI.create("/api/market/trades")).build();
     }
 } 
