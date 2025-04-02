@@ -67,8 +67,6 @@ public class ItemTradeService {
 
     @Transactional
     public ItemTradePostResponse postItemTradeHistory(ItemTradePostRequest request) {
-        validateItemTradeRequest(request);
-
         PotentialOption potentialOption = findPotentialOption(
                 request.potentialOption().grade(),
                 request.potentialOption().statPercent(),
@@ -147,15 +145,5 @@ public class ItemTradeService {
         }
         
         return itemOption;
-    }
-
-    private void validateItemTradeRequest(ItemTradePostRequest request) {
-        if (request.amount() <= 0) {
-            throw new BadRequestException("금액은 0보다 커야합니다.");
-        }
-        
-        if (request.cuttableCount() < 0) {
-            throw new BadRequestException("가위 사용 가능 횟수는 0 이상이어야 합니다.");
-        }
     }
 } 
