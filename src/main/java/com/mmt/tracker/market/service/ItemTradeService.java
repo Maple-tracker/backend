@@ -129,7 +129,7 @@ public class ItemTradeService {
             Boolean starforceScrollFlag,
             Boolean enchantedFlag
     ) {
-        ItemOption itemOption = itemOptionRepository.findByItemNameAndItemSlotAndStarForceAndStatTypeAndPotentialOptionAndAdditionalPotentialOptionAndStarforceScrollFlagAndEnchantedFlag(
+        return itemOptionRepository.findByItemNameAndItemSlotAndStarForceAndStatTypeAndPotentialOptionAndAdditionalPotentialOptionAndStarforceScrollFlagAndEnchantedFlag(
                 itemName,
                 itemSlot,
                 starForce,
@@ -138,12 +138,7 @@ public class ItemTradeService {
                 additionalPotentialOption,
                 starforceScrollFlag,
                 enchantedFlag
-        );
-        
-        if (itemOption == null) {
-            throw new BadRequestException("존재하지 않는 아이템 옵션");
-        }
-        
-        return itemOption;
+        )
+        .orElseThrow(() -> new BadRequestException("존재하지 않는 아이템 옵션"));
     }
 } 
