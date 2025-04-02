@@ -7,19 +7,17 @@ import com.mmt.tracker.market.controller.dto.response.ItemTradeResponse;
 import com.mmt.tracker.market.service.ItemTradeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/market/trades")
+@RequiredArgsConstructor
 @Tag(name = "Item Trade", description = "아이템 거래 내역 API")
 public class ItemTradeController {
 
     private final ItemTradeService itemTradeService;
-
-    public ItemTradeController(ItemTradeService itemTradeService) {
-        this.itemTradeService = itemTradeService;
-    }
 
     @Operation(summary = "아이템 거래 내역 조회", description = "아이템 정보로 거래 내역을 조회합니다")
     @PostMapping("/search")
