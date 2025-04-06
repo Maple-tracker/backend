@@ -23,5 +23,5 @@ public class PotentialOption {
     private Short statPercent;
 
     @Column(columnDefinition = "BOOLEAN", nullable = false)
-    private Boolean ital;
+    private Boolean potentialItal;
 }

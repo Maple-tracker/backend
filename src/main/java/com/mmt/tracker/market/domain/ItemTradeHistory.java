@@ -6,7 +6,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import com.mmt.tracker.advice.BadRequestException;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,16 +25,31 @@ public class ItemTradeHistory {
     private Long amount;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDateTime timeStamp;
 
     @Column(columnDefinition = "SMALLINT", nullable = false)
     private Short cuttableCount;
 
     public ItemTradeHistory(
-            ItemOption itemOption, Long amount, LocalDate date, Short cuttableCount) {
+            ItemOption itemOption, Long amount, LocalDateTime timeStamp, Short cuttableCount) {
+        validateAmount(amount);
+        validateCuttableCount(cuttableCount);
+        
         this.itemOption = itemOption;
         this.amount = amount;
-        this.date = date;
+        this.timeStamp = timeStamp;
         this.cuttableCount = cuttableCount;
+    }
+    
+    private void validateAmount(Long amount) {
+        if (amount <= 0) {
+            throw new BadRequestException("금액은 0보다 커야합니다.");
+        }
+    }
+    
+    private void validateCuttableCount(Short cuttableCount) {
+        if (cuttableCount < 0) {
+            throw new BadRequestException("가위 사용 가능 횟수는 0 이상이어야 합니다.");
+        }
     }
 }
