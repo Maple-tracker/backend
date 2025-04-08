@@ -5,7 +5,7 @@ import com.mmt.tracker.market.controller.dto.response.CompleteItemNameResponse;
 import com.mmt.tracker.market.service.ItemSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +17,7 @@ public class ItemSearchController {
 
     private final ItemSearchService itemSearchService;
 
-    @GetMapping("/completion")
+    @PostMapping("/completion")
     public ResponseEntity<CompleteItemNameResponse> completion(@RequestBody CompleteItemNameGetRequest request) {
         return ResponseEntity.ok().body(itemSearchService.getCompleteItemNames(request));
     }
