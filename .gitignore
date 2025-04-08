@@ -39,3 +39,4 @@ out/
 ### Secret Properties ###
 src/main/resources/application-secret.properties
 h2db
+.env
