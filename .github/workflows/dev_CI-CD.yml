@@ -39,6 +39,12 @@ jobs:
           name: tracker-develop-jar
           path: .
 
+      - name: Create .env file
+        run: |
+          cat <<EOF > .env
+          maple.api.key=${{ secrets.MAPLE_API_KEY }}
+          EOF
+
       - name: Check if server is running on port 8080
         id: check-server-on-port
         run: |
