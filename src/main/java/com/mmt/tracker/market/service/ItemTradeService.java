@@ -10,6 +10,8 @@ import com.mmt.tracker.market.repository.AdditionalPotentialOptionRepository;
 import com.mmt.tracker.market.repository.ItemOptionRepository;
 import com.mmt.tracker.market.repository.ItemTradeHistoryRepository;
 import com.mmt.tracker.market.repository.PotentialOptionRepository;
+import com.mmt.tracker.market.controller.dto.response.ItemOptionsGetResponse;
+import com.mmt.tracker.market.controller.dto.response.AvailableItemOption;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -101,6 +103,21 @@ public class ItemTradeService {
         return new ItemTradePostResponse(savedHistory.getId());
     }
     
+    @Transactional(readOnly = true)
+    public ItemOptionsGetResponse getItemOptions(String itemName) {
+        List<ItemOption> itemOptions = itemOptionRepository.findByItemName(itemName);
+
+        return new ItemOptionsGetResponse(itemOptions.stream()
+                .map(itemOption -> new AvailableItemOption(
+                        itemOption.getId(),
+                        itemOption.getStarForce(),
+                        itemOption.getPotentialOption().getGrade() + " " + itemOption.getPotentialOption().getStatPercent() + " " + itemOption.getPotentialOption().getPotentialItal(),
+                        itemOption.getAdditionalPotentialOption().getGrade() + " " + itemOption.getAdditionalPotentialOption().getLines() + " " + itemOption.getAdditionalPotentialOption().getPercentLines(),
+                        itemOption.getEnchantedFlag()
+                ))
+                .toList()
+        );
+    }
 
     private PotentialOption findPotentialOption(String grade, Short statPercent, Boolean potentialItal) {
         PotentialOption potentialOption = potentialOptionRepository.findByGradeAndStatPercentAndPotentialItal(grade, statPercent, potentialItal);
