@@ -1,15 +1,11 @@
 package com.mmt.tracker.market.service;
 
 import com.mmt.tracker.advice.BadRequestException;
-import com.mmt.tracker.advice.NotFoundException;
 import com.mmt.tracker.market.controller.dto.request.ItemTradeGetRequest;
 import com.mmt.tracker.market.controller.dto.request.ItemTradePostRequest;
-import com.mmt.tracker.market.controller.dto.response.AvailableItemOption;
-import com.mmt.tracker.market.controller.dto.response.ItemOptionsGetResponse;
 import com.mmt.tracker.market.controller.dto.response.ItemTradePostResponse;
 import com.mmt.tracker.market.controller.dto.response.ItemTradeResponse;
 import com.mmt.tracker.market.domain.AdditionalPotentialOption;
-import com.mmt.tracker.market.domain.ItemName;
 import com.mmt.tracker.market.domain.ItemOption;
 import com.mmt.tracker.market.domain.ItemTradeHistory;
 import com.mmt.tracker.market.domain.PotentialOption;
@@ -105,28 +101,7 @@ public class ItemTradeService {
         return new ItemTradePostResponse(savedHistory.getId());
     }
 
-    @Transactional(readOnly = true)
-    public ItemOptionsGetResponse getItemOptions(String itemName) {
-        List<ItemOption> itemOptions = itemOptionRepository.findByItemName(ItemName.fromString(itemName));
-        if (itemOptions.isEmpty()) {
-            throw new NotFoundException("존재하지 않는 아이템명입니다.");
-        }
 
-        return new ItemOptionsGetResponse(itemOptions.stream()
-                .map(itemOption -> new AvailableItemOption(
-                        itemOption.getId(),
-                        itemOption.getStarForce(),
-                        itemOption.getStatType().getValue(),
-                        itemOption.getPotentialOption().getGrade().getValue() + " " + itemOption.getPotentialOption()
-                                .getStatPercent() + " " + itemOption.getPotentialOption().getPotentialItal(),
-                        itemOption.getAdditionalPotentialOption().getGrade().getValue() + " "
-                                + itemOption.getAdditionalPotentialOption().getLines() + " "
-                                + itemOption.getAdditionalPotentialOption().getPercentLines(),
-                        itemOption.getEnchantedFlag()
-                ))
-                .toList()
-        );
-    }
 
     private PotentialOption findPotentialOption(String grade, Short statPercent, Boolean potentialItal) {
         PotentialOption potentialOption = potentialOptionRepository.findByGradeAndStatPercentAndPotentialItal(
