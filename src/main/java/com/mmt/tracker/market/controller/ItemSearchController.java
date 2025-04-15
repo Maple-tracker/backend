@@ -21,8 +21,8 @@ public class ItemSearchController {
     }
 
     @GetMapping("/options")
-    public ResponseEntity<ItemOptionsGetResponse> getItemOptions(@RequestParam String itemName) {
-        ItemOptionsGetResponse response = itemSearchService.getItemOptions(itemName);
+    public ResponseEntity<ItemOptionsGetResponse> getItemOptions(@RequestParam String name) {
+        ItemOptionsGetResponse response = itemSearchService.getItemOptions(name);
         return ResponseEntity.ok(response);
     }
 }
