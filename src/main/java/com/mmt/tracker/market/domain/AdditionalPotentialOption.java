@@ -16,12 +16,12 @@ public class AdditionalPotentialOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "CHAR(10)", nullable = false)
+    @Column(nullable = false)
     private String grade;
 
-    @Column(columnDefinition = "SMALLINT", nullable = false)
+    @Column(nullable = false)
     private Short lines;
 
-    @Column(columnDefinition = "SMALLINT", nullable = false)
+    @Column(nullable = false)
     private Short percentLines;
 }

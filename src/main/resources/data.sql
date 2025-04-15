@@ -33,7 +33,7 @@ additional_ids AS (
 ),
 combinations AS (
     SELECT 
-        '데이브레이크 펜던트' AS item_name,
+        'PENDANT_ECC1' AS item_name,
         '펜던트' AS item_slot,
         sf.star_force,
         st.stat_type,

@@ -16,12 +16,12 @@ public class PotentialOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "CHAR(10)", nullable = false)
+    @Column(nullable = false)
     private String grade;
 
     @Column(columnDefinition = "SMALLINT", nullable = false)
     private Short statPercent;
 
-    @Column(columnDefinition = "BOOLEAN", nullable = false)
+    @Column(nullable = false)
     private Boolean potentialItal;
 }
