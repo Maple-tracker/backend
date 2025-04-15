@@ -37,7 +37,7 @@ public class ItemSearchService {
     private List<String> getItemNamesFromInitial(String initials) {
         return Stream.of(ItemName.values())
                 .map(ItemName::getValue)
-                .filter(value -> HangulUtil.getInitial(HangulUtil.removeSpaces(value)).contains(initials))
+                .filter(value -> HangulUtil.getInitial(HangulUtil.removeSpaces(value)).startsWith(initials))
                 .toList();
     }
 }
