@@ -31,7 +31,7 @@ public class MapleApiClient {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Value("${maple.api.key}")
+    @Value("${MAPLE_API_KEY}")
     private String apiKey;
 
     private final RestTemplate restTemplate;

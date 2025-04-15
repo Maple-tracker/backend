@@ -1,22 +1,22 @@
-INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (1, '유니크', 15, false);
-INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (2, '유니크', 21, false);
-INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (3, '레전드리', 21, false);
-INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (4, '레전드리', 24, false);
-INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (5, '레전드리', 27, false);
-INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (6, '레전드리', 30, false);
-INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (7, '레전드리', 33, false);
-INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (8, '레전드리', 33, true);
-INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (9, '레전드리', 36, false);
+INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (1, 'UNIQUE', 15, false);
+INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (2, 'UNIQUE', 21, false);
+INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (3, 'LEGENDARY', 21, false);
+INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (4, 'LEGENDARY', 24, false);
+INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (5, 'LEGENDARY', 27, false);
+INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (6, 'LEGENDARY', 30, false);
+INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (7, 'LEGENDARY', 33, false);
+INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (8, 'LEGENDARY', 33, true);
+INSERT INTO potential_option (id, grade, stat_percent, potential_ital) VALUES (9, 'LEGENDARY', 36, false);
 
-INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (1, '없음', 2, 0);
-INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (2, '에픽', 2, 0);
-INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (3, '유니크', 2, 0);
-INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (4, '유니크', 3, 0);
-INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (5, '레전드리', 2, 0);
-INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (6, '레전드리', 3, 0);
-INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (7, '레전드리', 3, 1);
-INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (8, '레전드리', 3, 2);
-INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (9, '레전드리', 3, 3);
+INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (1, 'NONE', 0, 0);
+INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (2, 'EPIC', 2, 0);
+INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (3, 'UNIQUE', 2, 0);
+INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (4, 'UNIQUE', 3, 0);
+INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (5, 'LEGENDARY', 2, 0);
+INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (6, 'LEGENDARY', 3, 0);
+INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (7, 'LEGENDARY', 3, 1);
+INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (8, 'LEGENDARY', 3, 2);
+INSERT INTO additional_potential_option (id, grade, lines, percent_lines) VALUES (9, 'LEGENDARY', 3, 3);
 
 INSERT INTO item_option (item_name, item_slot, star_force, stat_type, potential_option_id, additional_potential_option_id, starforce_scroll_flag, enchanted_flag)
 WITH star_forces AS (
@@ -33,8 +33,8 @@ additional_ids AS (
 ),
 combinations AS (
     SELECT 
-        '데이브레이크 펜던트' AS item_name,
-        '펜던트' AS item_slot,
+        'PENDANT_ECC1' AS item_name,
+        'PENDANT' AS item_slot,
         sf.star_force,
         st.stat_type,
         p.id AS potential_option_id,

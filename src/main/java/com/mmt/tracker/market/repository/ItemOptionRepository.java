@@ -1,5 +1,6 @@
 package com.mmt.tracker.market.repository;
 
+import com.mmt.tracker.market.domain.ItemName;
 import com.mmt.tracker.market.domain.ItemOption;
 import com.mmt.tracker.market.domain.PotentialOption;
 import com.mmt.tracker.market.domain.AdditionalPotentialOption;
@@ -19,5 +20,5 @@ public interface ItemOptionRepository extends JpaRepository<ItemOption, Long> {
             Boolean enchantedFlag
     );
 
-    List<ItemOption> findByItemName(String itemName);
+    List<ItemOption> findByItemName(ItemName itemName);
 } 

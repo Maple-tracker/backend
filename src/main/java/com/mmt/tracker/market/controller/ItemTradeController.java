@@ -4,8 +4,6 @@ import com.mmt.tracker.market.controller.dto.request.ItemTradeGetRequest;
 import com.mmt.tracker.market.controller.dto.request.ItemTradePostRequest;
 import com.mmt.tracker.market.controller.dto.response.ItemTradePostResponse;
 import com.mmt.tracker.market.controller.dto.response.ItemTradeResponse;
-import com.mmt.tracker.market.controller.dto.response.ItemOptionsGetResponse;
-import com.mmt.tracker.market.controller.dto.response.AvailableItemOption;
 import com.mmt.tracker.market.service.ItemTradeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,9 +34,5 @@ public class ItemTradeController {
         return ResponseEntity.created(URI.create("/api/market/trades")).build();
     }
 
-    @GetMapping("/options")
-    public ResponseEntity<ItemOptionsGetResponse> getItemOptions(@RequestParam String itemName) {
-        ItemOptionsGetResponse response = itemTradeService.getItemOptions(itemName);
-        return ResponseEntity.ok(response);
-    }
+
 } 
