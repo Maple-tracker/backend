@@ -17,9 +17,10 @@ public class PotentialOption {
     private Long id;
 
     @Column(nullable = false)
-    private String grade;
+    @Enumerated(value = EnumType.STRING)
+    private PotentialGrade grade;
 
-    @Column(columnDefinition = "SMALLINT", nullable = false)
+    @Column(nullable = false)
     private Short statPercent;
 
     @Column(nullable = false)

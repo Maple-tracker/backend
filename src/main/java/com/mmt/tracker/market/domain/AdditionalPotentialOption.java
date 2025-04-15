@@ -17,7 +17,8 @@ public class AdditionalPotentialOption {
     private Long id;
 
     @Column(nullable = false)
-    private String grade;
+    @Enumerated(value = EnumType.STRING)
+    private PotentialGrade grade;
 
     @Column(nullable = false)
     private Short lines;

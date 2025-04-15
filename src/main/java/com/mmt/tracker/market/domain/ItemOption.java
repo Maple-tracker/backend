@@ -18,14 +18,16 @@ public class ItemOption {
     @Enumerated(value = EnumType.STRING)
     private ItemName itemName;
 
-    @Column
-    private String itemSlot;
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private ItemSlot itemSlot;
 
     @Column
     private Short starForce;
 
-    @Column
-    private String statType;
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private StatType statType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "potential_option_id")
@@ -38,6 +40,6 @@ public class ItemOption {
     @Column(nullable = false)
     private Boolean starforceScrollFlag;
 
-    @Column(columnDefinition = "BOOLEAN", nullable = false)
+    @Column(nullable = false)
     private Boolean enchantedFlag;
 }

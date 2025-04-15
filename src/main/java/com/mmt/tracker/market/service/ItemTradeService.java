@@ -116,9 +116,10 @@ public class ItemTradeService {
                 .map(itemOption -> new AvailableItemOption(
                         itemOption.getId(),
                         itemOption.getStarForce(),
-                        itemOption.getPotentialOption().getGrade() + " " + itemOption.getPotentialOption()
+                        itemOption.getStatType().getValue(),
+                        itemOption.getPotentialOption().getGrade().getValue() + " " + itemOption.getPotentialOption()
                                 .getStatPercent() + " " + itemOption.getPotentialOption().getPotentialItal(),
-                        itemOption.getAdditionalPotentialOption().getGrade() + " "
+                        itemOption.getAdditionalPotentialOption().getGrade().getValue() + " "
                                 + itemOption.getAdditionalPotentialOption().getLines() + " "
                                 + itemOption.getAdditionalPotentialOption().getPercentLines(),
                         itemOption.getEnchantedFlag()
