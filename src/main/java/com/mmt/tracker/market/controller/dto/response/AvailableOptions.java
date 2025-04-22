@@ -4,8 +4,7 @@ import java.util.List;
 
 public record AvailableOptions(
     List<String> starForce,
-    List<String> upperPotential,
-    List<String> lowerPotentialGrade,
-    List<String> statType,
-    boolean hasNoDrag
-) {} 
+    List<String> potentialOption,
+    List<String> additionalPotentialOption,
+    List<String> statType
+) {}

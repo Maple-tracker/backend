@@ -56,7 +56,7 @@ public class ItemSearchService {
     public ItemOptionsGetResponse getItemOptions(String itemName) {
         List<ItemOption> itemOptions = itemOptionRepository.findByItemName(ItemName.fromString(itemName));
         if (itemOptions.isEmpty()) {
-            throw new NotFoundException("존재하지 않는 아이템명입니다.");
+            throw new NotFoundException("선택 가능한 옵션이 존재하지 않는 아이템");
         }
 
         List<ItemOptionCombination> combinations = itemOptions.stream()
@@ -66,15 +66,14 @@ public class ItemSearchService {
                         itemOption.getPotentialOption().getGrade().getValue() + " " + itemOption.getPotentialOption().getStatPercent() + "% " + (itemOption.getPotentialOption().getPotentialItal()?"이탈":"정옵"),
                         itemOption.getAdditionalPotentialOption().getGrade().getValue() + " " + itemOption.getAdditionalPotentialOption().getLines() + " " + itemOption.getAdditionalPotentialOption().getPercentLines(),
                         itemOption.getStatType().getValue(),
-                        !itemOption.getEnchantedFlag()
+                        itemOption.getEnchantedFlag()
                 ))
                 .toList();
         AvailableOptions availableOptions = new AvailableOptions(
                 combinations.stream().map(c -> c.starForce() + "성").distinct().toList(),
-                combinations.stream().map(ItemOptionCombination::upperPotential).distinct().toList(),
-                combinations.stream().map(ItemOptionCombination::lowerPotentialGrade).distinct().toList(),
-                combinations.stream().map(ItemOptionCombination::statType).distinct().toList(),
-                true
+                combinations.stream().map(ItemOptionCombination::potentialOption).distinct().toList(),
+                combinations.stream().map(ItemOptionCombination::additionalPotentialOption).distinct().toList(),
+                combinations.stream().map(ItemOptionCombination::statType).distinct().toList()
         );
 
         return new ItemOptionsGetResponse(combinations, availableOptions);
