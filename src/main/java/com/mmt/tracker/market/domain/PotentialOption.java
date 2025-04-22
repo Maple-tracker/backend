@@ -25,4 +25,10 @@ public class PotentialOption {
 
     @Column(nullable = false)
     private Boolean potentialItal;
+
+    public PotentialOption(PotentialGrade grade, Short statPercent, Boolean potentialItal) {
+        this.grade = grade;
+        this.statPercent = statPercent;
+        this.potentialItal = potentialItal;
+    }
 }

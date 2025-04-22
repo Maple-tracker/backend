@@ -25,4 +25,10 @@ public class AdditionalPotentialOption {
 
     @Column(nullable = false)
     private Short percentLines;
+
+    public AdditionalPotentialOption(PotentialGrade grade, Short lines, Short percentLines) {
+        this.grade = grade;
+        this.lines = lines;
+        this.percentLines = percentLines;
+    }
 }
