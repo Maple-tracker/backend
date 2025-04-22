@@ -1,4 +1,4 @@
-package com.MMT.tracker.market.service;
+package com.mmt.tracker.market.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

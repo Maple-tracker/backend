@@ -1,4 +1,4 @@
-package com.MMT.tracker.market.controller;
+package com.mmt.tracker.market.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,7 +21,7 @@ class ItemSearchControllerTest {
 
     @DisplayName("GET /api/item_name/completion 자동완성 테스트 - 완성된 단어 입력")
     @Test
-    void testCompleztion_WithCompleteWord() {
+    void testCompletion_WithCompleteWord() {
         CompleteItemNameGetRequest requestBody = new CompleteItemNameGetRequest("샤이니");
 
         Response response = RestAssured.given().port(port).contentType(ContentType.JSON).body(requestBody)
