@@ -25,7 +25,7 @@ class ItemSearchControllerTest {
         CompleteItemNameGetRequest requestBody = new CompleteItemNameGetRequest("샤이니");
 
         Response response = RestAssured.given().port(port).contentType(ContentType.JSON).body(requestBody)
-                .when().get("/api/item_name/completion")
+                .when().post("/api/item_name/completion")
                 .then().statusCode(200).extract().response();
 
         List<String> names = response.jsonPath().getList("names");
@@ -44,7 +44,7 @@ class ItemSearchControllerTest {
         CompleteItemNameGetRequest requestBody = new CompleteItemNameGetRequest("샤이니 레드 워리어");
 
         Response response = RestAssured.given().port(port).contentType(ContentType.JSON).body(requestBody)
-                .when().get("/api/item_name/completion")
+                .when().post("/api/item_name/completion")
                 .then().statusCode(200).extract().response();
 
         List<String> names = response.jsonPath().getList("names");
@@ -57,7 +57,7 @@ class ItemSearchControllerTest {
         CompleteItemNameGetRequest requestBody = new CompleteItemNameGetRequest("ㅅㅇㄴ ㄹㄷ ㅇㄹㅇ ㅁㅇㅅㅌ ㅅㅂ");
 
         Response response = RestAssured.given().port(port).contentType(ContentType.JSON).body(requestBody)
-                .when().get("/api/item_name/completion")
+                .when().post("/api/item_name/completion")
                 .then().statusCode(200).extract().response();
 
         List<String> names = response.jsonPath().getList("names");
