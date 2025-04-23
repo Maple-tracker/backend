@@ -7,4 +7,4 @@ public record ItemOptionCombination(
     String additionalPotentialOption,
     String statType,
     Boolean enchantedFlag
-) {} 
+) {}
