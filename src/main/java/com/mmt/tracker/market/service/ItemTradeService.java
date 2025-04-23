@@ -5,19 +5,18 @@ import com.mmt.tracker.market.controller.dto.request.ItemTradeGetRequest;
 import com.mmt.tracker.market.controller.dto.request.ItemTradePostRequest;
 import com.mmt.tracker.market.controller.dto.response.ItemTradePostResponse;
 import com.mmt.tracker.market.controller.dto.response.ItemTradeResponse;
-import com.mmt.tracker.market.domain.*;
+import com.mmt.tracker.market.domain.AdditionalPotentialOption;
+import com.mmt.tracker.market.domain.ItemOption;
+import com.mmt.tracker.market.domain.ItemTradeHistory;
+import com.mmt.tracker.market.domain.PotentialOption;
 import com.mmt.tracker.market.repository.AdditionalPotentialOptionRepository;
 import com.mmt.tracker.market.repository.ItemOptionRepository;
 import com.mmt.tracker.market.repository.ItemTradeHistoryRepository;
 import com.mmt.tracker.market.repository.PotentialOptionRepository;
-import com.mmt.tracker.market.controller.dto.response.ItemOptionsGetResponse;
-import com.mmt.tracker.market.controller.dto.response.AvailableItemOption;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +27,6 @@ public class ItemTradeService {
     private final PotentialOptionRepository potentialOptionRepository;
     private final AdditionalPotentialOptionRepository additionalPotentialOptionRepository;
 
-
     @Transactional(readOnly = true)
     public ItemTradeResponse getItemTradeHistories(ItemTradeGetRequest request) {
         PotentialOption potentialOption = findPotentialOption(
@@ -36,12 +34,12 @@ public class ItemTradeService {
                 request.potentialOption().statPercent(),
                 request.potentialOption().potentialItal()
         );
-        
+
         AdditionalPotentialOption additionalPotentialOption = findAdditionalPotentialOption(
                 request.additionalPotentialOption().grade(),
                 request.additionalPotentialOption().lines(),
                 request.additionalPotentialOption().percentLines()
-        );  
+        );
 
         ItemOption itemOption = findItemOption(
                 request.itemName(),
@@ -53,7 +51,7 @@ public class ItemTradeService {
                 request.starforceScrollFlag(),
                 request.enchantedFlag()
         );
-        
+
         List<ItemTradeHistory> histories = itemTradeHistoryRepository.findByItemOption(itemOption);
 
         return new ItemTradeResponse(
@@ -63,7 +61,7 @@ public class ItemTradeService {
                                 history.getTimeStamp(),
                                 history.getCuttableCount()
                         ))
-                        .collect(Collectors.toList())
+                        .toList()
         );
     }
 
@@ -91,7 +89,7 @@ public class ItemTradeService {
                 request.starforceScrollFlag(),
                 request.enchantedFlag()
         );
-        
+
         ItemTradeHistory itemTradeHistory = new ItemTradeHistory(
                 itemOption,
                 request.amount(),
@@ -102,25 +100,15 @@ public class ItemTradeService {
         ItemTradeHistory savedHistory = itemTradeHistoryRepository.save(itemTradeHistory);
         return new ItemTradePostResponse(savedHistory.getId());
     }
-    
-    @Transactional(readOnly = true)
-    public ItemOptionsGetResponse getItemOptions(String itemName) {
-        List<ItemOption> itemOptions = itemOptionRepository.findByItemName(itemName);
 
-        return new ItemOptionsGetResponse(itemOptions.stream()
-                .map(itemOption -> new AvailableItemOption(
-                        itemOption.getId(),
-                        itemOption.getStarForce(),
-                        itemOption.getPotentialOption().getGrade() + " " + itemOption.getPotentialOption().getStatPercent() + " " + itemOption.getPotentialOption().getPotentialItal(),
-                        itemOption.getAdditionalPotentialOption().getGrade() + " " + itemOption.getAdditionalPotentialOption().getLines() + " " + itemOption.getAdditionalPotentialOption().getPercentLines(),
-                        itemOption.getEnchantedFlag()
-                ))
-                .toList()
-        );
-    }
+
 
     private PotentialOption findPotentialOption(String grade, Short statPercent, Boolean potentialItal) {
-        PotentialOption potentialOption = potentialOptionRepository.findByGradeAndStatPercentAndPotentialItal(grade, statPercent, potentialItal);
+        PotentialOption potentialOption = potentialOptionRepository.findByGradeAndStatPercentAndPotentialItal(
+                grade,
+                statPercent,
+                potentialItal
+        );
         if (potentialOption == null) {
             throw new BadRequestException("잠재능력 - 존재하지 않는 아이템 옵션");
         }
@@ -128,7 +116,7 @@ public class ItemTradeService {
     }
 
     private AdditionalPotentialOption findAdditionalPotentialOption(String grade, Short lines, Short percentLines) {
-        AdditionalPotentialOption additionalPotentialOption = 
+        AdditionalPotentialOption additionalPotentialOption =
                 additionalPotentialOptionRepository.findByGradeAndLinesAndPercentLines(grade, lines, percentLines);
         if (additionalPotentialOption == null) {
             throw new BadRequestException("에디셔널 잠재능력 - 존재하지 않는 아이템 옵션");
@@ -147,15 +135,15 @@ public class ItemTradeService {
             Boolean enchantedFlag
     ) {
         return itemOptionRepository.findByItemNameAndItemSlotAndStarForceAndStatTypeAndPotentialOptionAndAdditionalPotentialOptionAndStarforceScrollFlagAndEnchantedFlag(
-                itemName,
-                itemSlot,
-                starForce,
-                statType,
-                potentialOption,
-                additionalPotentialOption,
-                starforceScrollFlag,
-                enchantedFlag
-        )
-        .orElseThrow(() -> new BadRequestException("존재하지 않는 아이템 옵션"));
+                        itemName,
+                        itemSlot,
+                        starForce,
+                        statType,
+                        potentialOption,
+                        additionalPotentialOption,
+                        starforceScrollFlag,
+                        enchantedFlag
+                )
+                .orElseThrow(() -> new BadRequestException("존재하지 않는 아이템 옵션"));
     }
 } 

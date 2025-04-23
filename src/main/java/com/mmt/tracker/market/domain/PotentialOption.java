@@ -16,12 +16,19 @@ public class PotentialOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "CHAR(10)", nullable = false)
-    private String grade;
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private PotentialGrade grade;
 
-    @Column(columnDefinition = "SMALLINT", nullable = false)
+    @Column(nullable = false)
     private Short statPercent;
 
-    @Column(columnDefinition = "BOOLEAN", nullable = false)
+    @Column(nullable = false)
     private Boolean potentialItal;
+
+    public PotentialOption(PotentialGrade grade, Short statPercent, Boolean potentialItal) {
+        this.grade = grade;
+        this.statPercent = statPercent;
+        this.potentialItal = potentialItal;
+    }
 }
