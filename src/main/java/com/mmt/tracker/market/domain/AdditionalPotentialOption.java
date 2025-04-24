@@ -31,4 +31,8 @@ public class AdditionalPotentialOption {
         this.lines = lines;
         this.percentLines = percentLines;
     }
+
+    public String toInfo() {
+        return grade.getValue() + " " + lines + " " + percentLines;
+    }
 }

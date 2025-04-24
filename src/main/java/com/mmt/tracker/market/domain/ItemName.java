@@ -86,4 +86,8 @@ public enum ItemName {
             throw new BadRequestException("Unknown item name: " + text);
         }
     }
+
+    public boolean isNameEquals(String name) {
+        return value.equals(name);
+    }
 }
