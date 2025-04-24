@@ -1,29 +1,36 @@
 package com.mmt.tracker.market.controller;
 
-import com.mmt.tracker.market.controller.dto.request.ItemTradeGetRequest;
 import com.mmt.tracker.market.controller.dto.request.ItemTradePostRequest;
+import com.mmt.tracker.market.controller.dto.response.ItemPriceHistoryResponse;
 import com.mmt.tracker.market.controller.dto.response.ItemTradePostResponse;
-import com.mmt.tracker.market.controller.dto.response.ItemTradeResponse;
 import com.mmt.tracker.market.service.ItemTradeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import java.net.URI;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/market/trades")
+@RequestMapping("/api/item")
 @RequiredArgsConstructor
 @Tag(name = "Item Trade", description = "아이템 거래 내역 API")
 public class ItemTradeController {
 
     private final ItemTradeService itemTradeService;
 
-    @Operation(summary = "아이템 거래 내역 조회", description = "아이템 정보로 거래 내역을 조회합니다")
-    @PostMapping("/search")
-    public ResponseEntity<ItemTradeResponse> getItemTradeHistories(@RequestBody ItemTradeGetRequest request) {
-        ItemTradeResponse response = itemTradeService.getItemTradeHistories(request);
+    @GetMapping("/price/{itemName}")
+    public ResponseEntity<ItemPriceHistoryResponse> getItemPriceHistory(
+            @PathVariable String itemName,
+            @RequestParam Long optionId
+    ) {
+        ItemPriceHistoryResponse response = itemTradeService.readItemPriceHistory(itemName, optionId);
         return ResponseEntity.ok(response);
     }
 
@@ -33,6 +40,4 @@ public class ItemTradeController {
         itemTradeService.postItemTradeHistory(request);
         return ResponseEntity.created(URI.create("/api/market/trades")).build();
     }
-
-
 } 
