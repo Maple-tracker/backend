@@ -1,0 +1,22 @@
+package com.mmt.tracker.maple.controller.dto.response;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record AddOption(
+        String str,
+        String dex,
+        @JsonProperty("int") String _int,
+        String luk,
+        String max_hp,
+        String max_mp,
+        String attack_power,
+        String magic_power,
+        String armor,
+        String speed,
+        String jump,
+        String boss_damage,
+        String damage,
+        String all_stat,
+        Integer equipment_level_decrease
+) {
+}
