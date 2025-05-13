@@ -3,6 +3,7 @@ package com.mmt.tracker.market.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+import com.mmt.tracker.market.controller.dto.request.ItemOptionIdsPostRequest;
 import com.mmt.tracker.market.controller.dto.response.DailyPriceStats;
 import com.mmt.tracker.market.controller.dto.response.ItemBasicInfoDto;
 import com.mmt.tracker.market.controller.dto.response.ItemOptionDto;
@@ -61,7 +62,7 @@ class ItemTradeServiceTest {
     void readItemPriceHistory_ShouldThrow_WhenOptionNotExists() {
         assertThatThrownBy(() -> itemTradeService.readItemPriceHistory(
                 ItemName.PENDANT_ECC1.getValue(),
-                999L
+                new ItemOptionIdsPostRequest(List.of(999L))
         )).isInstanceOf(ItemOptionNotFound.class).hasMessage("존재하지 않는 아이템입니다.");
     }
 
@@ -87,7 +88,8 @@ class ItemTradeServiceTest {
         ));
 
         // --- When & Then ---
-        assertThatThrownBy(() -> itemTradeService.readItemPriceHistory("잘못된 이름", option.getId())).isInstanceOf(
+        assertThatThrownBy(() -> itemTradeService.readItemPriceHistory(
+                "잘못된 이름", new ItemOptionIdsPostRequest(List.of(option.getId())))).isInstanceOf(
                 ItemOptionNotFound.class).hasMessage("존재하지 않는 아이템입니다.");
     }
 
@@ -115,7 +117,7 @@ class ItemTradeServiceTest {
         // --- When & Then ---
         assertThatThrownBy(() -> itemTradeService.readItemPriceHistory(
                 ItemName.PENDANT_ECC1.getValue(),
-                option.getId()
+                new ItemOptionIdsPostRequest(List.of(option.getId()))
         )).isInstanceOf(IllegalArgumentException.class).hasMessage("거래 내역이 비어있습니다.");
     }
 
@@ -152,7 +154,7 @@ class ItemTradeServiceTest {
         // --- When ---
         ItemPriceHistoryResponse response = itemTradeService.readItemPriceHistory(
                 ItemName.PENDANT_ECC1.getValue(),
-                option.getId()
+                new ItemOptionIdsPostRequest(List.of(option.getId()))
         );
 
         // --- Then: BasicInfoDto 검증 ---
@@ -164,7 +166,7 @@ class ItemTradeServiceTest {
         assertThat(basic.tradable()).isTrue();
 
         // --- Then: ItemOptionDto 검증 ---
-        ItemOptionDto optDto = response.itemOption();
+        ItemOptionDto optDto = response.itemOptions().get(0);
         assertThat(optDto.id()).isEqualTo(option.getId());
         assertThat(optDto.starForce()).isEqualTo(option.getStarForce() + "성");
         assertThat(optDto.potentialOption()).isEqualTo(po.toInfo());

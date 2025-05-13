@@ -4,7 +4,7 @@ import java.util.List;
 
 public record ItemPriceHistoryResponse(
         ItemBasicInfoDto item,
-        ItemOptionDto itemOption,
+        List<ItemOptionDto> itemOptions,
         PriceStats priceStats,
         List<DailyPriceStats> priceHistory,
         List<ItemOptionDto> relatedOptions
