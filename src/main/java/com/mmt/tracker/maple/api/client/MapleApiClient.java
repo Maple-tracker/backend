@@ -1,4 +1,4 @@
-package com.mmt.tracker.maple.client;
+package com.mmt.tracker.maple.api.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -44,18 +44,26 @@ public class MapleApiClient {
         return executeApiRequest(url);
     }
 
-    public String getCharacterEquipment(String ocid, LocalDate date) {
-        StringBuilder urlBuilder = new StringBuilder(MapleApiUrl.BASE_URL.getUrl());
-
-        urlBuilder.append(
-                MapleApiUrl.GET_CHARACTER_ITEM_EQUIPMENT_BY_OCID.getUrl().formatted(ocid));
-
+    public String getCharacterBasicInfo(String ocid, LocalDate date) {
+        String url = MapleApiUrl.BASE_URL.getUrl() + 
+                    MapleApiUrl.GET_CHARACTER_BASIC_BY_OCID.getUrl().formatted(ocid);
+        
         if (date != null) {
-            String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            urlBuilder.append("&date=").append(formattedDate);
+            url += "&date=" + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }
+        
+        return executeApiRequest(url);
+    }
 
-        return executeApiRequest(urlBuilder.toString());
+    public String getCharacterEquipmentInfo(String ocid, LocalDate date) {
+        String url = MapleApiUrl.BASE_URL.getUrl() + 
+                    MapleApiUrl.GET_CHARACTER_ITEM_EQUIPMENT_BY_OCID.getUrl().formatted(ocid);
+        
+        if (date != null) {
+            url += "&date=" + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        }
+        
+        return executeApiRequest(url);
     }
 
     private HttpEntity<String> buildHttpEntity() {
