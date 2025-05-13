@@ -1,4 +1,4 @@
-package com.mmt.tracker.maple.client;
+package com.mmt.tracker.maple.api.client;
 
 public enum MapleApiUrl {
 
