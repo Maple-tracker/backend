@@ -7,8 +7,8 @@ public record ExceptionalOption(
         String dex,
         @JsonProperty("int") String _int,
         String luk,
-        String max_hp,
-        String max_mp,
-        String attack_power
+        @JsonProperty("max_hp") String maxHp,
+        @JsonProperty("max_mp") String maxMp,
+        @JsonProperty("attack_power") String attackPower
 ) {
 }

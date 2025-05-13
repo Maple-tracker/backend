@@ -7,18 +7,18 @@ public record BaseOption(
         String dex,
         @JsonProperty("int") String _int,
         String luk,
-        String max_hp,
-        String max_mp,
-        String attack_power,
-        String magic_power,
+        @JsonProperty("max_hp") String maxHp,
+        @JsonProperty("max_mp") String maxMp,
+        @JsonProperty("attack_power") String attackPower,
+        @JsonProperty("magic_power") String magicPower,
         String armor,
         String speed,
         String jump,
-        String boss_damage,
-        String ignore_monster_armor,
-        String all_stat,
+        @JsonProperty("boss_damage") String bossDamage,
+        @JsonProperty("ignore_monster_armor") String ignoreMonsterArmor,
+        @JsonProperty("all_stat") String allStat,
         String damage,
-        String max_hp_rate,
-        String max_mp_rate
+        @JsonProperty("max_hp_rate") String maxHpRate,
+        @JsonProperty("max_mp_rate") String maxMpRate
 ) {
 }
