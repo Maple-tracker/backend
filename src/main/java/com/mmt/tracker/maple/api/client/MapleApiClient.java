@@ -1,4 +1,4 @@
-package com.mmt.tracker.maple.client;
+package com.mmt.tracker.maple.api.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

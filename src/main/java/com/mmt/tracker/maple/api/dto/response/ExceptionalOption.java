@@ -1,4 +1,4 @@
-package com.mmt.tracker.maple.controller.dto.response;
+package com.mmt.tracker.maple.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

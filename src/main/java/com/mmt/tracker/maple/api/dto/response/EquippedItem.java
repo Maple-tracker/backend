@@ -1,4 +1,4 @@
-package com.mmt.tracker.maple.controller.dto.response;
+package com.mmt.tracker.maple.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -6,7 +6,7 @@ public record EquippedItem(
     @JsonProperty("item_equipment_part") String part,
     @JsonProperty("item_equipment_slot") String slot,
     @JsonProperty("item_name") String name,
-    @JsonProperty("item_icon") String icon,
+    @JsonProperty("item_icon") String iconUrl,
     @JsonProperty("potential_option_grade") String potentialOptionGrade,
     @JsonProperty("additional_potential_option_grade") String additionalPotentialOptionGrade,
     @JsonProperty("potential_option_1") String potentialOption1,

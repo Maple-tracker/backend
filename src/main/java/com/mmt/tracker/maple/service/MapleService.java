@@ -2,9 +2,12 @@ package com.mmt.tracker.maple.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mmt.tracker.maple.client.MapleApiClient;
+import com.mmt.tracker.maple.api.client.MapleApiClient;
 import com.mmt.tracker.maple.controller.dto.request.CharacterInfoRequest;
-import com.mmt.tracker.maple.controller.dto.response.*;
+import com.mmt.tracker.maple.api.dto.response.BasicInfoResponse;
+import com.mmt.tracker.maple.controller.dto.response.CharacterInfoResponse;
+import com.mmt.tracker.maple.api.dto.response.EquippedItem;
+import com.mmt.tracker.maple.api.dto.response.OcidResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
