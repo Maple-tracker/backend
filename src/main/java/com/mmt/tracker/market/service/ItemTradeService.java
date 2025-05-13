@@ -1,6 +1,7 @@
 package com.mmt.tracker.market.service;
 
 import com.mmt.tracker.advice.BadRequestException;
+import com.mmt.tracker.market.controller.dto.request.ItemOptionIdsPostRequest;
 import com.mmt.tracker.market.controller.dto.request.ItemTradePostRequest;
 import com.mmt.tracker.market.controller.dto.response.DailyPriceStats;
 import com.mmt.tracker.market.controller.dto.response.ItemBasicInfoDto;
@@ -123,64 +124,54 @@ public class ItemTradeService {
     }
 
     @Transactional(readOnly = true)
-    public ItemPriceHistoryResponse readItemPriceHistory(String itemName, Long optionId) {
-        ItemOption targetOption = itemOptionRepository.findById(optionId)
-                .orElseThrow(ItemOptionNotFound::new);
-        if (!targetOption.getItemName().isNameEquals(itemName)) {
+    public ItemPriceHistoryResponse readItemPriceHistory(String itemName, ItemOptionIdsPostRequest request) {
+        List<Long> optionIds = request.optionIds();
+        List<ItemOption> targetOptions = optionIds.stream()
+                .map(id -> itemOptionRepository.findById(id)
+                        .orElseThrow(ItemOptionNotFound::new))
+                .toList();
+
+        if (!targetOptions.stream().allMatch(itemOption -> itemOption.getItemName().isNameEquals(itemName))) {
             throw new ItemOptionNotFound();
         }
 
-        List<ItemTradeHistory> histories = itemTradeHistoryRepository.findByItemOption(targetOption);
+        List<ItemTradeHistory> histories = targetOptions.stream()
+                .flatMap(itemOption -> itemTradeHistoryRepository.findByItemOption(itemOption)
+                        .stream())
+                .toList();
 
-        ItemBasicInfoDto basicInfoDto = extractItemBasicInfoDto(optionId, targetOption);
+        ItemBasicInfoDto basicInfoDto = extractItemBasicInfoDto(targetOptions.get(0));
 
-        ItemOptionDto itemOptionDto = extractItemOptionDto(optionId, targetOption);
+        List<ItemOptionDto> itemOptionDtos = extractItemOptionDto(targetOptions);
 
         PriceStats priceStats = calculateStats(histories);
         List<DailyPriceStats> dailyPriceStats = extractPriceDataHistories(histories);
 
-        return new ItemPriceHistoryResponse(basicInfoDto, itemOptionDto, priceStats, dailyPriceStats, List.of());
+        return new ItemPriceHistoryResponse(basicInfoDto, itemOptionDtos, priceStats, dailyPriceStats, List.of());
     }
 
-    private List<DailyPriceStats> extractPriceDataHistories(List<ItemTradeHistory> histories) {
-        Map<LocalDate, List<ItemTradeHistory>> historyGroupedByDate = histories.stream()
-                .collect(Collectors.groupingBy(history -> history.getTimeStamp().toLocalDate()));
-
-        return historyGroupedByDate.entrySet()
-                .stream()
-                .map(entry -> {
-                    PriceStats dailyStats = calculateStats(entry.getValue());
-                    return new DailyPriceStats(
-                            entry.getKey(),
-                            dailyStats.averagePrice(),
-                            dailyStats.highestPrice(),
-                            dailyStats.lowestPrice(),
-                            entry.getValue().size()
-                    );
-                })
-                .toList();
-    }
-
-    private ItemOptionDto extractItemOptionDto(Long optionId, ItemOption targetOption) {
-        return new ItemOptionDto(
-                optionId,
-                targetOption.getStarForce() + "성",
-                targetOption.getPotentialOption().toInfo(),
-                targetOption.getAdditionalPotentialOption().toInfo(),
-                targetOption.getStatType().getValue(),
-                targetOption.getEnchantedFlag()
-        );
-    }
-
-    private ItemBasicInfoDto extractItemBasicInfoDto(Long optionId, ItemOption targetOption) {
+    private ItemBasicInfoDto extractItemBasicInfoDto(ItemOption targetOption) {
         return new ItemBasicInfoDto(
-                optionId,
+                targetOption.getId(),
                 targetOption.getItemName().getValue(),
                 URI.create("/placeholder.svg?height=64&width=64"),
                 targetOption.getItemSlot().getValue(),
                 0,
                 true
         );
+    }
+
+    private List<ItemOptionDto> extractItemOptionDto(List<ItemOption> targetOptions) {
+        return targetOptions.stream()
+                .map(targetOption -> new ItemOptionDto(
+                        targetOption.getId(),
+                        targetOption.getStarForce() + "성",
+                        targetOption.getPotentialOption().toInfo(),
+                        targetOption.getAdditionalPotentialOption().toInfo(),
+                        targetOption.getStatType().getValue(),
+                        targetOption.getEnchantedFlag()
+                ))
+                .toList();
     }
 
     private PriceStats calculateStats(List<ItemTradeHistory> histories) {
@@ -238,5 +229,24 @@ public class ItemTradeService {
                 priceChangePercentage,
                 lastUpdated
         );
+    }
+
+    private List<DailyPriceStats> extractPriceDataHistories(List<ItemTradeHistory> histories) {
+        Map<LocalDate, List<ItemTradeHistory>> historyGroupedByDate = histories.stream()
+                .collect(Collectors.groupingBy(history -> history.getTimeStamp().toLocalDate()));
+
+        return historyGroupedByDate.entrySet()
+                .stream()
+                .map(entry -> {
+                    PriceStats dailyStats = calculateStats(entry.getValue());
+                    return new DailyPriceStats(
+                            entry.getKey(),
+                            dailyStats.averagePrice(),
+                            dailyStats.highestPrice(),
+                            dailyStats.lowestPrice(),
+                            entry.getValue().size()
+                    );
+                })
+                .toList();
     }
 }
