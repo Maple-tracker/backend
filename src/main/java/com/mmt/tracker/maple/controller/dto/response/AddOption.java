@@ -7,16 +7,16 @@ public record AddOption(
         String dex,
         @JsonProperty("int") String _int,
         String luk,
-        String max_hp,
-        String max_mp,
-        String attack_power,
-        String magic_power,
+        @JsonProperty("max_hp") String maxHp,
+        @JsonProperty("max_mp") String maxMp,
+        @JsonProperty("attack_power") String attackPower,
+        @JsonProperty("magic_power") String magicPower,
         String armor,
         String speed,
         String jump,
-        String boss_damage,
-        String damage,
-        String all_stat,
-        Integer equipment_level_decrease
+        @JsonProperty("boss_damage") String bossDamage,
+        @JsonProperty("damage") String damage,
+        @JsonProperty("all_stat") String allStat,
+        @JsonProperty("equipment_level_decrease") Integer equipmentLevelDecrease
 ) {
 }
