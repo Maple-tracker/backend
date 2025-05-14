@@ -154,7 +154,7 @@ public class ItemTradeService {
         return new ItemBasicInfoDto(
                 targetOption.getId(),
                 targetOption.getItemName().getValue(),
-                URI.create("/placeholder.svg?height=64&width=64"),
+                URI.create(targetOption.getItemName().getUrl()),
                 targetOption.getItemSlot().getValue(),
                 0,
                 true
