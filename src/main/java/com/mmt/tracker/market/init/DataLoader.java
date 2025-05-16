@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedReader;
@@ -32,6 +33,7 @@ import java.util.Map;
 
 @Slf4j
 @Configuration
+@Profile("!test")
 @RequiredArgsConstructor
 public class DataLoader {
 
