@@ -30,7 +30,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.context.ActiveProfiles;
 
+@DisplayName("아이템 시세 검색 서비스 테스트")
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 class ItemTradeServiceTest {
 
