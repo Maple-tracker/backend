@@ -6,8 +6,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.mmt.tracker.advice.BadRequestException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 @DisplayName("ItemName Enum 테스트")
+@ActiveProfiles("test")
 class ItemNameTest {
 
     @Test
