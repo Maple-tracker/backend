@@ -63,10 +63,10 @@ public class ItemSearchService {
         }
 
         Long notEnchantedItemOptionId = itemOptions.stream()
-                .filter(ItemOption::getEnchantedFlag)
+                .filter(itemOption -> !itemOption.getEnchantedFlag())
                 .findFirst()
                 .map(ItemOption::getId)
-                .orElseThrow(() -> new NotFoundException("노작 정보가 존재하지 않습니다."));
+                .orElse(-1L);
 
         List<ItemOptionCombination> combinations = itemOptions.stream()
                 .map(itemOption -> new ItemOptionCombination(
@@ -74,8 +74,7 @@ public class ItemSearchService {
                         itemOption.getStarForce(),
                         itemOption.getPotentialOption().getGrade().getValue() + " " + itemOption.getPotentialOption()
                                 .getStatPercent() + "% " + (
-                                Boolean.TRUE.equals(itemOption.getPotentialOption().getPotentialItal()) ? "이탈"
-                                        : "정옵"),
+                                Boolean.TRUE.equals(itemOption.getPotentialOption().getPotentialItal()) ? "이탈" : "정옵"),
                         itemOption.getAdditionalPotentialOption().getGrade().getValue() + " "
                                 + itemOption.getAdditionalPotentialOption().getLines() + " "
                                 + itemOption.getAdditionalPotentialOption().getPercentLines(),
@@ -129,14 +128,12 @@ public class ItemSearchService {
                             .collect(Collectors.groupingBy(ItemOptionCombination::additionalPotentialOption));
 
                     byAdditional.forEach((additional, additionalOptions) -> {
-                        List<Long> optionIds = additionalOptions.stream()
-                                .map(ItemOptionCombination::id)
-                                .toList();
-
+                        Long optionId = additionalOptions.stream()
+                                .findFirst().get().id();
                         CategoryOption additionalCategory = new CategoryOption(
                                 additional,
                                 Collections.emptyMap(),
-                                optionIds
+                                optionId
                         );
 
                         additionalCategories.put(additional, additionalCategory);
@@ -145,7 +142,7 @@ public class ItemSearchService {
                     CategoryOption potentialCategory = new CategoryOption(
                             potential,
                             additionalCategories,
-                            Collections.emptyList()
+                            -1L
                     );
 
                     potentialCategories.put(potential, potentialCategory);
@@ -154,7 +151,7 @@ public class ItemSearchService {
                 CategoryOption statTypeCategory = new CategoryOption(
                         statType,
                         potentialCategories,
-                        Collections.emptyList()
+                        -1L
                 );
 
                 statTypeCategories.put(statType, statTypeCategory);
@@ -163,7 +160,7 @@ public class ItemSearchService {
             CategoryOption starForceCategory = new CategoryOption(
                     starForce + "성",
                     statTypeCategories,
-                    Collections.emptyList()
+                    -1L
             );
 
             starForceCategories.put(starForce + "성", starForceCategory);
