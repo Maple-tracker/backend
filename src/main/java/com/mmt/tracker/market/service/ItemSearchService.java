@@ -62,13 +62,20 @@ public class ItemSearchService {
             throw new NotFoundException("선택 가능한 옵션이 존재하지 않는 아이템");
         }
 
+        Long notEnchantedItemOptionId = itemOptions.stream()
+                .filter(ItemOption::getEnchantedFlag)
+                .findFirst()
+                .map(ItemOption::getId)
+                .orElseThrow(() -> new NotFoundException("노작 정보가 존재하지 않습니다."));
+
         List<ItemOptionCombination> combinations = itemOptions.stream()
                 .map(itemOption -> new ItemOptionCombination(
                         itemOption.getId(),
                         itemOption.getStarForce(),
                         itemOption.getPotentialOption().getGrade().getValue() + " " + itemOption.getPotentialOption()
-                                .getStatPercent() + "% " + (itemOption.getPotentialOption().getPotentialItal() ? "이탈"
-                                : "정옵"),
+                                .getStatPercent() + "% " + (
+                                Boolean.TRUE.equals(itemOption.getPotentialOption().getPotentialItal()) ? "이탈"
+                                        : "정옵"),
                         itemOption.getAdditionalPotentialOption().getGrade().getValue() + " "
                                 + itemOption.getAdditionalPotentialOption().getLines() + " "
                                 + itemOption.getAdditionalPotentialOption().getPercentLines(),
@@ -94,7 +101,7 @@ public class ItemSearchService {
         // Create categorized options
         Map<String, CategoryOption> categorizedOptions = createCategorizedOptions(combinations);
 
-        return new ItemOptionsGetResponse(combinations, availableOptions, categorizedOptions);
+        return new ItemOptionsGetResponse(combinations, availableOptions, categorizedOptions, notEnchantedItemOptionId);
     }
 
     private Map<String, CategoryOption> createCategorizedOptions(List<ItemOptionCombination> combinations) {

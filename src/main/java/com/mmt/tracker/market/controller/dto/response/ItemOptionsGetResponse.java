@@ -6,7 +6,8 @@ import java.util.Map;
 public record ItemOptionsGetResponse(
         List<ItemOptionCombination> combinations,
         AvailableOptions availableOptions,
-        Map<String, CategoryOption> categorizedOptions
+        Map<String, CategoryOption> categorizedOptions,
+        Long notEnchantedItemId
 ) {
 
 }
