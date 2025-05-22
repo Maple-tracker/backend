@@ -6,7 +6,7 @@ import java.util.Map;
 public record CategoryOption(
         String name,
         Map<String, CategoryOption> subCategories,
-        List<Long> optionIds
+        Long optionIds
 ) {
 
 }
