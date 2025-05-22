@@ -63,10 +63,10 @@ public class ItemSearchService {
         }
 
         Long notEnchantedItemOptionId = itemOptions.stream()
-                .filter(ItemOption::getEnchantedFlag)
+                .filter(itemOption -> !itemOption.getEnchantedFlag())
                 .findFirst()
                 .map(ItemOption::getId)
-                .orElseThrow(() -> new NotFoundException("노작 정보가 존재하지 않습니다."));
+                .orElse(-1L);
 
         List<ItemOptionCombination> combinations = itemOptions.stream()
                 .map(itemOption -> new ItemOptionCombination(
