@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.mmt.tracker.advice.BadRequestException;
 import com.mmt.tracker.advice.InternalServerException;
+import com.mmt.tracker.advice.TrackerGlobalException;
 import com.mmt.tracker.config.MapleApiClientConfiguration;
 import com.mmt.tracker.maple.api.dto.response.BasicInfoResponse;
 import com.mmt.tracker.maple.api.dto.response.EquippedItem;
@@ -94,7 +95,7 @@ public class MapleApiClient {
         headers.set(NXOPEN_API_KEY_HEADER, apiKey);
         return new HttpEntity<>(headers);
     }
-
+    
     private String executeApiRequest(String url) {
         HttpEntity<String> entity = buildHttpEntity();
 
@@ -106,57 +107,50 @@ public class MapleApiClient {
                 return response.getBody();
             }
 
-            handleErrorResponse(response, url);
-            return null;
+            // Handle non-2xx responses
+            throw handleApiError(response, url);
         } catch (HttpClientErrorException | HttpServerErrorException e) {
-            handleErrorResponse(
+            // Handle Spring's HTTP exceptions
+            throw handleApiError(
                     ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString()),
                     url);
-            return null;
         } catch (ResourceAccessException e) {
-            return null;
+            // Handle connection issues
+            throw MapleApiErrorCode.SERVER_ERROR.createException();
+        } catch (TrackerGlobalException e) {
+            // Re-throw our custom exceptions
+            throw e;
         } catch (Exception e) {
-            return null;
+            // Handle unexpected errors
+            throw MapleApiErrorCode.UNEXPECTED_ERROR.createException();
         }
     }
 
-    private void handleErrorResponse(ResponseEntity<String> response, String url) {
+    private TrackerGlobalException handleApiError(ResponseEntity<String> response, String url) {
         int statusCode = response.getStatusCode().value();
-        String errorMessage = "API 요청 실패";
 
-        switch (statusCode) {
-            case 400:
-                try {
-                    JsonNode errorNode = objectMapper.readTree(response.getBody()).get("error");
-                    String errorCode = errorNode.get("name").asText();
+        if (statusCode == 400) {
+            return handleBadRequestError(response, url);
+        }
 
-                    switch (errorCode) {
-                        case "OPENAPI00003":
-                            throw new BadRequestException("유효하지 않은 OCID");
-                        case "OPENAPI00004":
-                            if (url.contains("item-equipment")) {
-                                throw new BadRequestException("조회 불가능한 날짜");
-                            }
-                            throw new BadRequestException("존재하지 않는 캐릭터명");
-                        default:
-                            throw new BadRequestException("잘못된 요청입니다");
-                    }
-                } catch (BadRequestException e) {
-                    throw e;
-                } catch (JsonProcessingException e) {
-                    throw new InternalServerException("응답을 파싱하는 중 오류 발생");
-                } catch (Exception e) {
-                    throw new InternalServerException("예상하지 못한 오류 발생");
-                }
+        return MapleApiErrorCode.forStatusCode(statusCode).createException();
+    }
 
-            case 403:
-                throw new InternalServerException("유효하지 않은 API 키");
-            case 429:
-                throw new InternalServerException("API 호출 한도를 초과");
-            case 500:
-                throw new InternalServerException("메이플스토리 API 서버 오류 발생");
-            default:
-                throw new InternalServerException(errorMessage);
+    private TrackerGlobalException handleBadRequestError(ResponseEntity<String> response, String url) {
+        try {
+            JsonNode errorNode = objectMapper.readTree(response.getBody()).get("error");
+            String errorCode = errorNode.get("name").asText();
+
+            // Special case for OPENAPI00004 with character_name endpoint
+            if ("OPENAPI00004".equals(errorCode) && url.contains("character_name")) {
+                return new BadRequestException("유효하지 않은 캐릭터명");
+            }
+
+            return MapleApiErrorCode.findByCode(errorCode).createException();
+        } catch (JsonProcessingException e) {
+            return MapleApiErrorCode.PARSING_ERROR.createException();
+        } catch (Exception e) {
+            return MapleApiErrorCode.UNEXPECTED_ERROR.createException();
         }
     }
 }
