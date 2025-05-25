@@ -26,7 +26,7 @@ public class MapleController {
     public ResponseEntity<CharacterInfoResponse> getCharacterInfo(
             @RequestParam String characterName,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
-    ) throws Exception {
+    ) {
         CharacterInfoRequest request = new CharacterInfoRequest(characterName, date);
         return ResponseEntity.ok(mapleService.getCharacterInfo(request));
     }

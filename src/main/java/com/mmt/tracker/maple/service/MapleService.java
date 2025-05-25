@@ -17,7 +17,7 @@ public class MapleService {
 
     private final MapleApiClient mapleApiClient;
 
-    public CharacterInfoResponse getCharacterInfo(CharacterInfoRequest request) throws Exception{
+    public CharacterInfoResponse getCharacterInfo(CharacterInfoRequest request) {
         OcidResponse ocidData = mapleApiClient.getCharacterOcid(request.characterName());
 
         BasicInfoResponse basicInfo = mapleApiClient.getCharacterBasicInfo(ocidData.ocid(), request.date());
