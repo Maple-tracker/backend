@@ -1,7 +1,5 @@
 package com.mmt.tracker.maple.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mmt.tracker.maple.api.client.MapleApiClient;
 import com.mmt.tracker.maple.controller.dto.request.CharacterInfoRequest;
 import com.mmt.tracker.maple.api.dto.response.BasicInfoResponse;
@@ -18,23 +16,13 @@ import java.util.List;
 public class MapleService {
 
     private final MapleApiClient mapleApiClient;
-    private final ObjectMapper objectMapper;
 
-    public CharacterInfoResponse getCharacterInfo(CharacterInfoRequest request) throws Exception {
-        String ocidResponse = mapleApiClient.getCharacterOcid(request.characterName());
-        OcidResponse ocidData = objectMapper.readValue(ocidResponse, OcidResponse.class);
+    public CharacterInfoResponse getCharacterInfo(CharacterInfoRequest request) throws Exception{
+        OcidResponse ocidData = mapleApiClient.getCharacterOcid(request.characterName());
 
-        String basicInfoResponse = mapleApiClient.getCharacterBasicInfo(ocidData.ocid(), request.date());
-        BasicInfoResponse basicInfo = objectMapper.readValue(basicInfoResponse, BasicInfoResponse.class);
+        BasicInfoResponse basicInfo = mapleApiClient.getCharacterBasicInfo(ocidData.ocid(), request.date());
 
-        String equipmentResponse = mapleApiClient.getCharacterEquipmentInfo(ocidData.ocid(), request.date());
-        
-        JsonNode rootNode = objectMapper.readTree(equipmentResponse);
-        JsonNode itemEquipmentNode = rootNode.get("item_equipment");
-        List<EquippedItem> equippedItems = objectMapper.readValue(
-            itemEquipmentNode.toString(), 
-            objectMapper.getTypeFactory().constructCollectionType(List.class, EquippedItem.class)
-        );
+        List<EquippedItem> equippedItems = mapleApiClient.getCharacterEquipmentInfo(ocidData.ocid(), request.date());
 
         return new CharacterInfoResponse(basicInfo, equippedItems);
     }
