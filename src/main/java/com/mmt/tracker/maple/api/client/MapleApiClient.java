@@ -3,9 +3,13 @@ package com.mmt.tracker.maple.api.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import com.mmt.tracker.advice.BadRequestException;
 import com.mmt.tracker.advice.InternalServerException;
 import com.mmt.tracker.config.MapleApiClientConfiguration;
+import com.mmt.tracker.maple.api.dto.response.BasicInfoResponse;
+import com.mmt.tracker.maple.api.dto.response.EquippedItem;
+import com.mmt.tracker.maple.api.dto.response.OcidResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,14 +26,14 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class MapleApiClient {
 
     private static final String NXOPEN_API_KEY_HEADER = "x-nxopen-api-key";
-
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     @Value("${MAPLE_API_KEY}")
     private String apiKey;
@@ -37,33 +41,52 @@ public class MapleApiClient {
     private final RestTemplate restTemplate;
     private final MapleApiClientConfiguration apiConfig;
 
-    public String getCharacterOcid(String characterName) {
+    public OcidResponse getCharacterOcid(String characterName) {
         String url =
                 MapleApiUrl.BASE_URL.getUrl()
                         + MapleApiUrl.GET_CHARACTER_OCID_BY_NAME.getUrl().formatted(characterName);
-        return executeApiRequest(url);
+        String response = executeApiRequest(url);
+        try {
+            return objectMapper.readValue(response, OcidResponse.class);
+        } catch (JsonProcessingException e) {
+            throw new InternalServerException("Failed to parse OCID response: " + e.getMessage());
+        }
     }
 
-    public String getCharacterBasicInfo(String ocid, LocalDate date) {
+    public BasicInfoResponse getCharacterBasicInfo(String ocid, LocalDate date) {
         String url = MapleApiUrl.BASE_URL.getUrl() + 
                     MapleApiUrl.GET_CHARACTER_BASIC_BY_OCID.getUrl().formatted(ocid);
-        
+
         if (date != null) {
             url += "&date=" + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }
-        
-        return executeApiRequest(url);
+
+        String response = executeApiRequest(url);
+        try {
+            return objectMapper.readValue(response, BasicInfoResponse.class);
+        } catch (JsonProcessingException e) {
+            throw new InternalServerException("Failed to parse basic info response: " + e.getMessage());
+        }
     }
 
-    public String getCharacterEquipmentInfo(String ocid, LocalDate date) {
+    public List<EquippedItem> getCharacterEquipmentInfo(String ocid, LocalDate date) {
         String url = MapleApiUrl.BASE_URL.getUrl() + 
                     MapleApiUrl.GET_CHARACTER_ITEM_EQUIPMENT_BY_OCID.getUrl().formatted(ocid);
-        
+
         if (date != null) {
             url += "&date=" + date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }
-        
-        return executeApiRequest(url);
+
+        String response = executeApiRequest(url);
+        try {
+            JsonNode rootNode = objectMapper.readTree(response);
+            JsonNode itemEquipmentNode = rootNode.get("item_equipment");
+            CollectionType listType = objectMapper.getTypeFactory()
+                .constructCollectionType(List.class, EquippedItem.class);
+            return objectMapper.readValue(itemEquipmentNode.toString(), listType);
+        } catch (JsonProcessingException e) {
+            throw new InternalServerException("Failed to parse equipment response: " + e.getMessage());
+        }
     }
 
     private HttpEntity<String> buildHttpEntity() {
