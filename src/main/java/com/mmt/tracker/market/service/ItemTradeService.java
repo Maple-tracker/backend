@@ -2,7 +2,7 @@ package com.mmt.tracker.market.service;
 
 import com.mmt.tracker.advice.BadRequestException;
 import com.mmt.tracker.market.controller.dto.request.ItemOptionIdsPostRequest;
-import com.mmt.tracker.market.controller.dto.request.ItemTradePostRequest;
+import com.mmt.tracker.market.controller.dto.request.HistoryPostRequest;
 import com.mmt.tracker.market.controller.dto.response.DailyPriceStats;
 import com.mmt.tracker.market.controller.dto.response.ItemBasicInfoDto;
 import com.mmt.tracker.market.controller.dto.response.ItemOptionDto;

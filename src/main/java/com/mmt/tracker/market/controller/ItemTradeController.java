@@ -1,7 +1,7 @@
 package com.mmt.tracker.market.controller;
 
 import com.mmt.tracker.market.controller.dto.request.ItemOptionIdsPostRequest;
-import com.mmt.tracker.market.controller.dto.request.ItemTradePostRequest;
+import com.mmt.tracker.market.controller.dto.request.HistoryPostRequest;
 import com.mmt.tracker.market.controller.dto.response.ItemPriceHistoryResponse;
 import com.mmt.tracker.market.service.ItemTradeService;
 import io.swagger.v3.oas.annotations.Operation;
