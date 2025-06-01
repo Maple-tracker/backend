@@ -1,5 +1,7 @@
 package com.mmt.tracker.market.domain;
 
+import com.mmt.tracker.market.repository.ItemOptionRepository;
+
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
@@ -54,5 +56,41 @@ public class ItemOption {
         this.additionalPotentialOption = additionalPotentialOption;
         this.starforceScrollFlag = starforceScrollFlag;
         this.enchantedFlag = enchantedFlag;
+    }
+
+    public static ItemOption findOrCreate(
+            ItemName itemName,
+            StatType statType,
+            Short starForce,
+            PotentialOption potentialOption,
+            AdditionalPotentialOption additionalPotentialOption,
+            Boolean starforceScrollFlag,
+            Boolean enchantedFlag,
+            ItemOptionRepository repository) {
+
+        ItemSlot itemSlot = ItemSlot.fromItemName(itemName);
+
+        return repository.findByItemNameAndItemSlotAndStarForceAndStatTypeAndPotentialOptionAndAdditionalPotentialOptionAndStarforceScrollFlagAndEnchantedFlag(
+                itemName,
+                itemSlot,
+                starForce,
+                statType,
+                potentialOption,
+                additionalPotentialOption,
+                starforceScrollFlag,
+                enchantedFlag
+        ).orElseGet(() -> {
+            ItemOption newOption = new ItemOption(
+                    itemName,
+                    itemSlot,
+                    starForce,
+                    statType,
+                    potentialOption,
+                    additionalPotentialOption,
+                    starforceScrollFlag,
+                    enchantedFlag
+            );
+            return repository.save(newOption);
+        });
     }
 }

@@ -35,7 +35,7 @@ public class ItemTradeController {
     @Operation(summary = "아이템 거래 내역 등록", description = "아이템의 거래 내역을 등록합니다")
     @PostMapping
     public ResponseEntity<Void> postItemTradeHistory(
-            @RequestBody ItemTradePostRequest request
+            @RequestBody HistoryPostRequest request
     ) {
         itemTradeService.postItemTradeHistory(request);
         return ResponseEntity.created(URI.create("/api/market/trades")).build();
