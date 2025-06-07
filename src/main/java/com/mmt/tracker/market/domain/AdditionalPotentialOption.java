@@ -1,5 +1,7 @@
 package com.mmt.tracker.market.domain;
 
+import com.mmt.tracker.market.repository.AdditionalPotentialOptionRepository;
+
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
@@ -34,5 +36,26 @@ public class AdditionalPotentialOption {
 
     public String toInfo() {
         return grade.getValue() + " " + lines + " " + percentLines;
+    }
+
+    public static AdditionalPotentialOption findOrCreate(
+            String grade, 
+            Short lines, 
+            Short percentLines, 
+            AdditionalPotentialOptionRepository repository) {
+
+        PotentialGrade additionalPotentialGrade = PotentialGrade.fromString(grade);
+        return repository.findByGradeAndLinesAndPercentLines(
+                additionalPotentialGrade,
+                lines,
+                percentLines
+        ).orElseGet(() -> {
+            AdditionalPotentialOption newOption = new AdditionalPotentialOption(
+                    PotentialGrade.fromString(grade),
+                    lines,
+                    percentLines
+            );
+            return repository.save(newOption);
+        });
     }
 }

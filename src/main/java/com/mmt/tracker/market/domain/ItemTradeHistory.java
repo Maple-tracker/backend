@@ -1,13 +1,16 @@
 package com.mmt.tracker.market.domain;
 
+import com.mmt.tracker.advice.BadRequestException;
+import com.mmt.tracker.market.repository.ItemTradeHistoryRepository;
+
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import com.mmt.tracker.advice.BadRequestException;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,7 +37,8 @@ public class ItemTradeHistory {
             ItemOption itemOption, Long amount, LocalDateTime timeStamp, Short cuttableCount) {
         validateAmount(amount);
         validateCuttableCount(cuttableCount);
-        
+        validateDate(timeStamp.toLocalDate());
+
         this.itemOption = itemOption;
         this.amount = amount;
         this.timeStamp = timeStamp;
@@ -51,5 +55,30 @@ public class ItemTradeHistory {
         if (cuttableCount < 0) {
             throw new BadRequestException("가위 사용 가능 횟수는 0 이상이어야 합니다.");
         }
+    }
+
+    private void validateDate(LocalDate date) {
+        if (date == null) {
+            throw new BadRequestException("날짜가 존재하지 않습니다.");
+        }
+    }
+
+    public static void createAndSave(
+            ItemOption itemOption, 
+            Long amount, 
+            LocalDate date, 
+            Short cuttableCount,
+            ItemTradeHistoryRepository repository) {
+
+        LocalDateTime timestamp = date.atStartOfDay();
+
+        ItemTradeHistory history = new ItemTradeHistory(
+                itemOption,
+                amount,
+                timestamp,
+                cuttableCount
+        );
+
+        repository.save(history);
     }
 }

@@ -1,5 +1,7 @@
 package com.mmt.tracker.market.domain;
 
+import com.mmt.tracker.market.repository.PotentialOptionRepository;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -49,5 +51,26 @@ public class PotentialOption {
             return ITAL;
         }
         return NOT_ITAL;
+    }
+
+    public static PotentialOption findOrCreate(
+            String grade, 
+            Short statPercent, 
+            Boolean potentialItal, 
+            PotentialOptionRepository repository) {
+
+        PotentialGrade potentialGrade = PotentialGrade.fromString(grade);
+        return repository.findByGradeAndStatPercentAndPotentialItal(
+                potentialGrade,
+                statPercent,
+                potentialItal
+        ).orElseGet(() -> {
+            PotentialOption newOption = new PotentialOption(
+                    PotentialGrade.fromString(grade),
+                    statPercent,
+                    potentialItal
+            );
+            return repository.save(newOption);
+        });
     }
 }

@@ -1,9 +1,8 @@
 package com.mmt.tracker.market.controller;
 
 import com.mmt.tracker.market.controller.dto.request.ItemOptionIdsPostRequest;
-import com.mmt.tracker.market.controller.dto.request.ItemTradePostRequest;
+import com.mmt.tracker.market.controller.dto.request.HistoryPostRequest;
 import com.mmt.tracker.market.controller.dto.response.ItemPriceHistoryResponse;
-import com.mmt.tracker.market.controller.dto.response.ItemTradePostResponse;
 import com.mmt.tracker.market.service.ItemTradeService;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,9 @@ public class ItemTradeController {
     }
 
     @PostMapping
-    public ResponseEntity<ItemTradePostResponse> postItemTradeHistory(@RequestBody ItemTradePostRequest request) {
+    public ResponseEntity<Void> postItemTradeHistory(
+            @RequestBody HistoryPostRequest request
+    ) {
         itemTradeService.postItemTradeHistory(request);
         return ResponseEntity.created(URI.create("/api/market/trades")).build();
     }
