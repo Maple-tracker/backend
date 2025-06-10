@@ -76,7 +76,7 @@ public class ItemSearchService {
                                 .getStatPercent() + "% " + (
                                 Boolean.TRUE.equals(itemOption.getPotentialOption().getPotentialItal()) ? "이탈" : "정옵"),
                         itemOption.getAdditionalPotentialOption().getGrade().getValue() + " "
-                                + itemOption.getAdditionalPotentialOption().getLines() + " "
+                                + itemOption.getAdditionalPotentialOption().getOptionLines() + " "
                                 + itemOption.getAdditionalPotentialOption().getPercentLines(),
                         itemOption.getStatType().getValue(),
                         itemOption.getEnchantedFlag()

@@ -23,19 +23,19 @@ public class AdditionalPotentialOption {
     private PotentialGrade grade;
 
     @Column(nullable = false)
-    private Short lines;
+    private Short optionLines;
 
     @Column(nullable = false)
     private Short percentLines;
 
     public AdditionalPotentialOption(PotentialGrade grade, Short lines, Short percentLines) {
         this.grade = grade;
-        this.lines = lines;
+        this.optionLines = lines;
         this.percentLines = percentLines;
     }
 
     public String toInfo() {
-        return grade.getValue() + " " + lines + " " + percentLines;
+        return grade.getValue() + " " + optionLines + " " + percentLines;
     }
 
     public static AdditionalPotentialOption findOrCreate(
@@ -45,7 +45,7 @@ public class AdditionalPotentialOption {
             AdditionalPotentialOptionRepository repository) {
 
         PotentialGrade additionalPotentialGrade = PotentialGrade.fromString(grade);
-        return repository.findByGradeAndLinesAndPercentLines(
+        return repository.findByGradeAndOptionLinesAndPercentLines(
                 additionalPotentialGrade,
                 lines,
                 percentLines
