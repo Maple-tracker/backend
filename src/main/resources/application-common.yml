@@ -1,0 +1,12 @@
+spring:
+  config:
+    activate:
+      on-profile: common
+    import: optional:file:.env[.properties]
+    
+application:
+  name: tracker
+
+sql:
+  init:
+    mode: never
