@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface AdditionalPotentialOptionRepository extends JpaRepository<AdditionalPotentialOption, Long> {
-    Optional<AdditionalPotentialOption> findByGradeAndLinesAndPercentLines(
+    Optional<AdditionalPotentialOption> findByGradeAndOptionLinesAndPercentLines(
             PotentialGrade grade,
-            Short lines,
+            Short optionLines,
             Short percentLines
     );
 } 
