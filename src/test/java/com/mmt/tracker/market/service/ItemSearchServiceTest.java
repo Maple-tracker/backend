@@ -265,7 +265,7 @@ class ItemSearchServiceTest {
         assertThat(starForce17StrPotentialAdditional).isNotNull();
         assertThat(starForce17StrPotentialAdditional.name()).isEqualTo(expectedLowerPotential);
         assertThat(starForce17StrPotentialAdditional.subCategories()).isEmpty();
-        assertThat(starForce17StrPotentialAdditional.optionIds()).isNotEmpty();
+        assertThat(starForce17StrPotentialAdditional.optionId()).isNotZero();
     }
 
     @DisplayName("옵션이 존재하지 않는 아이템으로 조회")

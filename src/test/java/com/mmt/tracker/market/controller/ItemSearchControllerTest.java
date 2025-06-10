@@ -215,8 +215,8 @@ class ItemSearchControllerTest {
         assertThat(starForce17StrSubCategories.keySet()).hasSize(1);
 
         // 최하위 카테고리에 옵션 ID가 있는지 검증
-        List<Integer> optionIds = response.jsonPath().getList(
-                "categorizedOptions.'17성'.subCategories.STR.subCategories.'레전드리 30% 정옵'.subCategories.'레전드리 2 2'.optionIds");
-        assertThat(optionIds).isNotEmpty();
+        Integer optionId = response.jsonPath().get(
+                "categorizedOptions.'17성'.subCategories.STR.subCategories.'레전드리 30% 정옵'.subCategories.'레전드리 2 2'.optionId");
+        assertThat(optionId).isNotZero();
     }
 }
