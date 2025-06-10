@@ -19,3 +19,6 @@ spring:
     driverClassName: com.mysql.cj.jdbc.Driver
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
+
+    data-loader:
+      activate: false
