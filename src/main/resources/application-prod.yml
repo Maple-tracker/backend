@@ -20,5 +20,5 @@ spring:
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
 
-    data-loader:
-      activate: false
+  data-loader:
+    activate: false

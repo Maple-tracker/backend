@@ -1,11 +1,4 @@
 spring:
-  profiles:
-    active: dev
-    include: common
-
----
-
-spring:
   config:
     activate:
       on-profile: dev
@@ -26,5 +19,5 @@ spring:
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
 
-    data-loader:
-      activate: ${DATA_LOADER_ACTIVATE} # .env 파일에서 true-false 지정
+  data-loader:
+    activate: ${DATA_LOADER_ACTIVATE} # .env 파일에서 true-false 지정
