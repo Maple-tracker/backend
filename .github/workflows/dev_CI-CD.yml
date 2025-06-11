@@ -72,5 +72,5 @@ jobs:
         env:
           RUNNER_TRACKING_ID: ""
         run: |
-          sudo nohup java -jar tracker-0.0.1-SNAPSHOT.jar -Dspring.profiles.active=dev &
+          sudo nohup java -Dspring.profiles.active=dev -jar tracker-0.0.1-SNAPSHOT.jar &
           echo "Lastest Backend API Server started."
