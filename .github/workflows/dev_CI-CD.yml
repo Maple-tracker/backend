@@ -43,6 +43,12 @@ jobs:
         run: |
           cat <<EOF > .env
           MAPLE_API_KEY=${{ secrets.MAPLE_API_KEY }}
+
+          # DB Secrets
+          RDS_DB_ENDPOINT=${{ secrets.RDS_DB_ENDPOINT }}
+          MYSQL_DATABASE_DEV=${{ secrets.MYSQL_DATABASE_DEV }}
+          MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
           EOF
 
       - name: Check if server is running on port 8080
@@ -66,5 +72,5 @@ jobs:
         env:
           RUNNER_TRACKING_ID: ""
         run: |
-          sudo nohup java -jar tracker-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev &
+          sudo nohup java -jar tracker-0.0.1-SNAPSHOT.jar -Dspring.profiles.active=dev &
           echo "Lastest Backend API Server started."

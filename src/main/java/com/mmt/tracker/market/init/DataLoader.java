@@ -14,9 +14,11 @@ import com.mmt.tracker.market.repository.ItemOptionRepository;
 import com.mmt.tracker.market.repository.ItemTradeHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedReader;
@@ -32,8 +34,12 @@ import java.util.Map;
 
 @Slf4j
 @Configuration
+@Profile("!test")
 @RequiredArgsConstructor
 public class DataLoader {
+
+    @Value("${spring.data-loader.activate:false}")
+    private boolean isActivated;
 
     private final PotentialOptionRepository potentialOptionRepository;
     private final AdditionalPotentialOptionRepository additionalPotentialOptionRepository;
@@ -42,23 +48,28 @@ public class DataLoader {
 
     @Bean
     public CommandLineRunner loadData() {
+        if(!isActivated) {
+            return args -> {
+            };
+        }
+
         return args -> {
             log.info("CSV 데이터 로딩을 시작합니다.");
-            
+
             Map<String, PotentialOption> potentialOptionCache = new HashMap<>();
             Map<String, AdditionalPotentialOption> additionalPotentialOptionCache = new HashMap<>();
             Map<String, ItemOption> itemOptionCache = new HashMap<>();
 
             try (BufferedReader reader = new BufferedReader(
                     new InputStreamReader(new ClassPathResource("auction_data.csv").getInputStream(), StandardCharsets.UTF_8))) {
-                
+
                 // Skip header
                 String header = reader.readLine();
                 if (header == null) {
                     log.error("CSV 파일이 비어있습니다.");
                     return;
                 }
-                
+
                 String line;
                 int lineNumber = 1;
                 while ((line = reader.readLine()) != null) {
@@ -72,7 +83,7 @@ public class DataLoader {
 
                         // 아이템 이름 변환
                         ItemName itemName = ItemName.fromString(data[0]);
-                        
+
                         // 잠재능력 옵션 생성 또는 조회
                         String potentialKey = String.format("%s_%s_%s", data[5], data[6], data[7]);
                         potentialOptionCache.computeIfAbsent(potentialKey, k -> {
@@ -105,7 +116,7 @@ public class DataLoader {
                                 data[12], // starforceScrollFlag
                                 data[13]  // enchantedFlag
                         );
-                        
+
                         ItemOption itemOption = itemOptionCache.computeIfAbsent(itemOptionKey, k -> {
                             ItemOption option = new ItemOption(
                                     itemName,
@@ -140,7 +151,7 @@ public class DataLoader {
             } catch (Exception e) {
                 log.error("CSV 파일 읽기 중 오류 발생: {}", e.getMessage());
             }
-            
+
             log.info("CSV 데이터 로딩이 완료되었습니다.");
         };
     }
