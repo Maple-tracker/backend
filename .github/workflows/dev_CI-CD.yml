@@ -49,6 +49,8 @@ jobs:
           MYSQL_DATABASE_DEV=${{ secrets.MYSQL_DATABASE_DEV }}
           MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}
           MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
+
+          DATA_LOADER_ACTIVATE=false
           EOF
 
       - name: Check if server is running on port 8080
