@@ -15,7 +15,7 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
 
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST}/prod?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://${RDS_DB_ENDPOINT}/${MYSQL_DATABASE_PROD}?useSSL=false&allowPublicKeyRetrieval=true
     driverClassName: com.mysql.cj.jdbc.Driver
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
