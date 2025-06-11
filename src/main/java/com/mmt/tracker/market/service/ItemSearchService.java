@@ -63,7 +63,7 @@ public class ItemSearchService {
         }
 
         Long notEnchantedItemOptionId = itemOptions.stream()
-                .filter(itemOption -> !itemOption.getEnchantedFlag())
+                .filter(ItemOption::getEnchantedFlag)
                 .findFirst()
                 .map(ItemOption::getId)
                 .orElse(-1L);
