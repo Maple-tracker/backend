@@ -38,7 +38,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class DataLoader {
 
-    @Value("${spring.data-loader.activate}")
+    @Value("${spring.data-loader.activate:false}")
     private boolean isActivated;
 
     private final PotentialOptionRepository potentialOptionRepository;
